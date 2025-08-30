@@ -1,14 +1,13 @@
 package org.skypro.skyshop.basket;
 
-import org.skypro.skyshop.Product;
+import org.skypro.skyshop.product.Product;
 
 public class ProductBasket {
+    private Product[] products = new Product[5];
 
 
-    private static Product[] products = new Product[5];
-
-
-    public static void addProduct(Product product) {
+    // 1. добавление в корзину
+    public void addProduct(Product product) {
         for (int i = 0; i < products.length; i++) {
             if (products[i] == null) {
                 products[i] = product;
@@ -21,8 +20,8 @@ public class ProductBasket {
         }
     }
 
-
-    public static int basketTotalPrice() {
+    // 2. получение общеей стоимости корзины
+    public int basketTotalPrice() {
         int total = 0;
         Product product = new Product();
         for (int i = 0; i < products.length; i++) {
@@ -34,8 +33,8 @@ public class ProductBasket {
         return total;
     }
 
-
-    public static void printBasket() {
+    // 3. печать содержиого корзины в определенном виде
+    public void printBasket() {
         Product product = new Product();
         for (int i = 0; i < products.length; i++) {
             if (products[i] != null) {
@@ -47,8 +46,8 @@ public class ProductBasket {
         }
     }
 
-
-    public static boolean isAdded(Product product) {
+    // 4. Проверка по имени продукта, есть ли продукт в корзине
+    public boolean isAdded(Product product) {
         for (int i = 0; i < products.length; i++) {
             if (products[i] != null && product.getName() == products[i].getName()) {
                 return true;
@@ -59,8 +58,8 @@ public class ProductBasket {
         return false;
     }
 
-
-    public static void clearBasket() {
+    // 5. очистка корзины
+    public void clearBasket() {
         for (int i = 0; i < products.length; i++) {
             products[i] = null;
         }
