@@ -1,6 +1,7 @@
 package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
 
 public class ProductBasket {
     private Product[] products = new Product[5];
@@ -23,10 +24,9 @@ public class ProductBasket {
     // 2. получение общеей стоимости корзины
     public int basketTotalPrice() {
         int total = 0;
-        Product product = new Product();
         for (int i = 0; i < products.length; i++) {
+            Product product = products[i];
             if (products[i] != null) {
-                product = products[i];
                 total += product.getPrice();
             }
         }
@@ -35,16 +35,27 @@ public class ProductBasket {
 
     // 3. печать содержиого корзины в определенном виде
     public void printBasket() {
-        Product product = new Product();
+        int total = 0;
+        int counterSpecial = 0;
+        boolean isBasketEmpty = true;
         for (int i = 0; i < products.length; i++) {
             if (products[i] != null) {
-                product = products[i];
-                System.out.println("<" + product.getName() + ">" + ": " + "<" + product.getPrice() + ">");
-            } else if (products[i] == null && i == (products.length - 1)) {
-                System.out.println("В корзине пусто.");
+                Product product = products[i];
+                System.out.println(product.toString());
+                total += product.getPrice();
+                isBasketEmpty = false;
+                if (product.isSpecial(product)) {
+                    counterSpecial += 1;
+                }
             }
         }
+        if (isBasketEmpty == true) {
+            System.out.println("В корзине пусто.");
+        }
+        System.out.println("Итого: " + total);
+        System.out.println("Специальных товаров: " + counterSpecial);
     }
+
 
     // 4. Проверка по имени продукта, есть ли продукт в корзине
     public boolean isAdded(Product product) {
