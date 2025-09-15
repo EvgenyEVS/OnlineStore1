@@ -1,7 +1,10 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
 
 
 public class App {
@@ -11,12 +14,12 @@ public class App {
         ProductBasket productBasket1 = new ProductBasket();
 
         // создал продукты
-        Product notebook = new Product("Notebook", 40000);
-        Product table = new Product("Table", 15000);
-        Product monitor = new Product("Monitor", 15000);
-        Product keyboard = new Product("Keyboard", 2000);
-        Product mouse = new Product("Mouse", 2000);
-        Product board = new Product("Board", 1000);
+        Product notebook = new SimpleProduct("Notebook", 40000);
+        Product table = new SimpleProduct("Table", 15000);
+        Product monitor = new DiscountedProduct("Monitor", 15000, 30);
+        Product keyboard = new FixPriceProduct("Keyboard");
+        Product mouse = new FixPriceProduct("Mouse");
+        Product board = new DiscountedProduct("Board", 1000, 50);
 
         // 1. добавил в корзину
         productBasket1.addProduct(notebook);
@@ -57,19 +60,21 @@ public class App {
         System.out.println("\n создание  корзины №2, добавление 2 товаров, демонстрация");
         ProductBasket productBasket2 = new ProductBasket();
 
-        // 1. добавил в корзину
-        productBasket2.addProduct(mouse);
-        productBasket2.addProduct(mouse);
+        productBasket2.addProduct(monitor);
+        productBasket2.addProduct(keyboard);
 
-        // проверка: 3. печать корзины
+        // проверка: 3. печать заполненной корзины
         productBasket2.printBasket();
 
         // 4. общая стоимость корзины с товарами
         System.out.println("Общая стоимость корзины = " + productBasket2.basketTotalPrice());
 
-        // 5, 6. поиск в корзине продукта по имени
-        System.out.println("productBasket2.isAdded(mouse) = " + productBasket2.isAdded(mouse));
-        System.out.println("productBasket2.isAdded(notebook) = " + productBasket2.isAdded(notebook));
+
+        // 5. поиск в корзине продукта по имени
+        System.out.println("ProductBasket.isAdded(notebook) = " + productBasket2.isAdded(notebook));
+
+        // 6. поиск в корзине продукта по имени (нет продукта)
+        System.out.println("ProductBasket.isAdded(monitor) = " + productBasket2.isAdded(monitor));
 
         // 7. очистить корзину
         productBasket2.clearBasket();
