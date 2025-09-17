@@ -9,6 +9,10 @@ public class ProductBasket {
 
     // 1. добавление в корзину
     public void addProduct(Product product) {
+        if (product == null) {
+            throw new NullPointerException("Невозможно добавить объект null");
+        }
+
         for (int i = 0; i < products.length; i++) {
             if (products[i] == null) {
                 products[i] = product;
@@ -16,7 +20,7 @@ public class ProductBasket {
                 break;
             } else if (i == products.length - 1) {
                 System.out.println("Невозможно добавить продукт. В корзине нет места, " + product.getName() + " не добавлен");
-                break;
+                return;
             }
         }
     }
@@ -59,12 +63,22 @@ public class ProductBasket {
 
     // 4. Проверка по имени продукта, есть ли продукт в корзине
     public boolean isAdded(Product product) {
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null && product.getName() == products[i].getName()) {
-                return true;
-            } else if (products[i] == null && i == (products.length - 1)) {
-                System.out.println("В корзине пусто.");
+        if (product == null) {
+            return false;
+        }
+
+        boolean isEmpty = true;
+
+        for (Product value : products) {
+            if (value != null) {
+                isEmpty = false;
+                if (product.getName().equals(value.getName())) {
+                    return true;
+                }
             }
+        }
+        if (isEmpty) {
+            System.out.println("В корзине пусто.");
         }
         return false;
     }
