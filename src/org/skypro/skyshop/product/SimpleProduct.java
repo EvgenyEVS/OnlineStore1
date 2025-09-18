@@ -10,6 +10,9 @@ public class SimpleProduct extends Product {
 
     public SimpleProduct(String nameProduct, int price) {
         super(nameProduct);
+        if (price <= 0) {
+            throw new IllegalArgumentException("Стоимость продукта должна быть больше 0.");
+        }
         this.price = price;
     }
 

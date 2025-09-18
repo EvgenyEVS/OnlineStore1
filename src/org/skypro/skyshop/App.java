@@ -1,92 +1,107 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.SearchEngine.BestResultNotFoundException;
+import org.skypro.skyshop.SearchEngine.SearchEngine;
+import org.skypro.skyshop.SearchEngine.Searchable;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class App {
     public static void main(String[] args) {
 
-        // создание корзины №1, зааполнение до отказа, демонстрция методов
+
         ProductBasket productBasket1 = new ProductBasket();
 
-        // создал продукты
-        Product notebook = new SimpleProduct("Notebook", 40000);
-        Product table = new SimpleProduct("Table", 15000);
-        Product monitor = new DiscountedProduct("Monitor", 15000, 30);
-        Product keyboard = new FixPriceProduct("Keyboard");
-        Product mouse = new FixPriceProduct("Mouse");
-        Product board = new DiscountedProduct("Board", 1000, 50);
+        Product notebook = null;
+        Product table = null;
+        Product monitor = null;
+        Product keyboard = null;
 
-        // 1. добавил в корзину
-        productBasket1.addProduct(notebook);
-        productBasket1.addProduct(table);
-        productBasket1.addProduct(monitor);
-        productBasket1.addProduct(keyboard);
-        productBasket1.addProduct(mouse);
-        productBasket1.addProduct(board); // 2. не помещается
 
-        // проверка: 3. печать заполненной корзины
+        try {
+            notebook = new SimpleProduct("Notebook", 0);
+            productBasket1.addProduct(notebook);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Ошибка!" + e.getMessage());
+        }
+
+        try {
+            table = new SimpleProduct("   ", 15000);
+            productBasket1.addProduct(table);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+
+        } catch (NullPointerException e) {
+            System.out.println("Ошибка!" + e.getMessage());
+        }
+
+        try {
+            monitor = new DiscountedProduct("Monitor", 1000, 30);
+            productBasket1.addProduct(monitor);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Ошибка!" + e.getMessage());
+        }
+
+        try {
+            keyboard = new FixPriceProduct("Keyboard");
+            productBasket1.addProduct(keyboard);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Ошибка!" + e.getMessage());
+        }
+
+
         productBasket1.printBasket();
 
-        // 4. общая стоимость корзины с товарами
-        System.out.println("Общая стоимость корзины = " + productBasket1.basketTotalPrice());
+
+        Searchable book = new Searchable("Книга изобретений 20 века",
+                "В этом справочнике собраны самые " +
+                        "интересные изобретения за 20 век с коротким описанием. " +
+                        "Хронологический порядок и поиск по стране, автору " +
+                        "реализован в соответствующих таблицах");
+        Searchable hondaVFR = new Searchable("Мотоцикл Honda VFR",
+                "Мотоцикл Honda VFR (Хонда ВФР), " +
+                        "он же Выфер - замечательный представитель класса Спорт-турист, " +
+                        "подарит Вам настоящую свободу перемещений, как будто у Вас выросли крылья! ");
+        Searchable birds = new Searchable("Птицы Австралии", "Всякие разные птицы там летают. " +
+                "крылья у одной такие, крылья у другой сякие, и как раз крылья уже 3 раза упоминаются)))");
+
+        Searchable[] searchableArray = new Searchable[10];
+        searchableArray[1] = book;
+        searchableArray[2] = hondaVFR;
+        searchableArray[3] = birds;
 
 
-        // 5. поиск в корзине продукта по имени
-        System.out.println("ProductBasket.isAdded(notebook) = " + productBasket1.isAdded(notebook));
+        try {
+            SearchEngine.getSearchTerm("изобррррретение", searchableArray);
+        } catch (BestResultNotFoundException e) {
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
 
-        // 6. поиск в корзине продукта по имени (нет продукта)
-        System.out.println("ProductBasket.isAdded(mouse) = " + productBasket1.isAdded(mouse));
+        try {
+            SearchEngine.getSearchTerm("изобрет", searchableArray);
+        } catch (BestResultNotFoundException e) {
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
 
-        // 7. очистить корзину
-        productBasket1.clearBasket();
-
-        // 8. печать пустой корзины
-        productBasket1.printBasket();
-
-        // 9. печать общей стоимости пустой корзины
-        System.out.println("Общая стоимость корзины = " + productBasket1.basketTotalPrice());
-
-        // 10. поиск продукта по имени в путой корзине
-        System.out.println("ProductBasket.isAdded(notebook) = " + productBasket1.isAdded(notebook));
-
-
-        //
-        // создание  корзины №2, добавление 2 товаров, демонстрация
-        System.out.println("\n создание  корзины №2, добавление 2 товаров, демонстрация");
-        ProductBasket productBasket2 = new ProductBasket();
-
-        productBasket2.addProduct(monitor);
-        productBasket2.addProduct(keyboard);
-
-        // проверка: 3. печать заполненной корзины
-        productBasket2.printBasket();
-
-        // 4. общая стоимость корзины с товарами
-        System.out.println("Общая стоимость корзины = " + productBasket2.basketTotalPrice());
-
-
-        // 5. поиск в корзине продукта по имени
-        System.out.println("ProductBasket.isAdded(notebook) = " + productBasket2.isAdded(notebook));
-
-        // 6. поиск в корзине продукта по имени (нет продукта)
-        System.out.println("ProductBasket.isAdded(monitor) = " + productBasket2.isAdded(monitor));
-
-        // 7. очистить корзину
-        productBasket2.clearBasket();
-
-        // 8. печать пустой корзины
-        productBasket2.printBasket();
-
-        // 9. печать общей стоимости пустой корзины
-        System.out.println("Общая стоимость корзины = " + productBasket2.basketTotalPrice());
-
-        // 10. поиск продукта по имени в путой корзине
-        System.out.println("ProductBasket.isAdded(notebook) = " + productBasket2.isAdded(notebook));
+        try {
+            SearchEngine.getSearchTerm("крылья", searchableArray);
+        } catch (BestResultNotFoundException e) {
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
 
     }
 }
+

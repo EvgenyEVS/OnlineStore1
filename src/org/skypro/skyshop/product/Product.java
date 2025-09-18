@@ -8,6 +8,7 @@ public abstract class Product {
     }
 
     public Product(String nameProduct) {
+        isCorrectName(nameProduct);
         this.nameProduct = nameProduct;
     }
 
@@ -18,5 +19,11 @@ public abstract class Product {
     public abstract int getPrice();
 
     public abstract boolean isSpecial(Product product);
+
+    public static void isCorrectName(String name) throws IllegalArgumentException {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Строка пустая. Заполните наименование продукта.");
+        }
+    }
 
 }

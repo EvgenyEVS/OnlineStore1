@@ -12,7 +12,16 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String nameProduct, int price, int discount) {
         super(nameProduct);
+
+
+        if (price <= 0) {
+            throw new IllegalArgumentException("Стоимость продукта должна быть больше 0.");
+        }
         this.price = price;
+
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Процент скидки должен быть в пределах от 0 до 100.");
+        }
         this.discount = discount;
     }
 
